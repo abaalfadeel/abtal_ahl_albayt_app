@@ -1,1 +1,31 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>قصص أبطال أهل البيت</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<h1>قصص أبطال أهل البيت</h1>
+<div id="stories-list"></div>
+
+<script>
+fetch('data_stories.json')
+.then(response => response.json())
+.then(data => {
+    const container = document.getElementById('stories-list');
+    data.forEach(story => {
+        const btn = document.createElement('button');
+        btn.textContent = story.title;
+        btn.onclick = () => {
+            localStorage.setItem('currentStory', story.id);
+            window.location.href = 'story_view.html';
+        };
+        container.appendChild(btn);
+    });
+});
+</script>
+
+</body>
+</html>
