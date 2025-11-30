@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أبطال أهل البيت - الداشبورد</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>اختر قسمك يا بطل</h1>
+
+<div class="dashboard">
+    <button onclick="openPage('stories.html')">📖 قصص</button>
+    <button onclick="openPage('games.html')">🎮 ألعاب</button>
+    <button onclick="openPage('arabic.html')">🅰️ تعلم العربية</button>
+    <button onclick="openPage('english.html')">🔤 تعلم الإنكليزية</button>
+    <button onclick="openPage('titles.html')">🏅 الألقاب</button>
+    <button onclick="openPage('donate.html')">💖 التبرع</button>
+    <button onclick="openPage('nasheed.html')">🎵 الأناشيد</button>
+    <button onclick="openPage('gallery.html')">🖼️ الصور</button>
+</div>
+
+<script>
+function openPage(page) {
+    window.location.href = page;
+}
+</script>
+
+</body>
+</html>
