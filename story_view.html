@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>عرض القصة</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<div id="story-container">
+    <h2 id="story-title"></h2>
+    <img id="story-image" src="" alt="" style="width:300px;">
+    <p id="story-text"></p>
+    <audio id="story-audio" controls></audio>
+    <br>
+    <button onclick="backToStories()">عودة إلى القصص</button>
+</div>
+
+<script>
+function backToStories() {
+    window.location.href = 'stories.html';
+}
+
+fetch('data_stories.json')
+.then(response => response.json())
+.then(data => {
+    const storyId = localStorage.getItem('currentStory');
+    const story = data.find(s => s.id == storyId);
+    if(story){
+        document.getElementById('story-title').textContent = story.title;
+        document.getElementById('story-image').src = story.image;
+        document.getElementById('story-text').textContent = story.text;
+        document.getElementById('story-audio').src = story.audio;
+    }
+});
+</script>
+
+</body>
+</html>
