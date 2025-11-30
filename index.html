@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أبطال أهل البيت</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<div class="welcome-container">
+    <img src="assets/images/logo.png" class="logo" alt="أبطال أهل البيت">
+    <h1>مرحباً يا بطل!</h1>
+    <p>هيا نبدأ رحلتنا مع أبطال أهل البيت</p>
+    <button onclick="startApp()">ابدأ</button>
+</div>
+
+<audio id="welcome-audio" src="assets/audio/welcome.mp3"></audio>
+
+<script>
+function startApp() {
+    document.getElementById('welcome-audio').play();
+    setTimeout(() => {
+        window.location.href = 'menu.html';
+    }, 1000); // بعد ثانية ينتقل للقائمة الرئيسية
+}
+</script>
+
+</body>
+</html>
