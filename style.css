@@ -1,70 +1,539 @@
-/* ---------------------------- */
-/* تصميم واجهة الترحيب */
-.welcome-container {
+:root {
+    --primary-color: #2c5f2d;
+    --secondary-color: #97bc62;
+    --accent-color: #f9cc00;
+    --gold-color: #FFD700;
+    --text-color: #333;
+    --bg-color: #f4f9f4;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --radius: 15px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- Screen Management --- */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+    z-index: 10;
+}
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#appContainer {
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+}
+#appContainer.active {
+    display: block;
+}
+
+/* --- Start & Character Selection --- */
+.logo-container h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.logo-container p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+.main-button {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 20px 50px;
+    border-radius: var(--radius);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.main-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.characters-grid {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+.character-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 3px solid var(--accent-color);
+    border-radius: var(--radius);
+    padding: 30px;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+.character-card:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.character-avatar {
+    font-size: 5rem;
+    margin-bottom: 15px;
+}
+
+/* --- Main App Layout --- */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+    box-shadow: var(--shadow);
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: linear-gradient(to bottom, #FDEFF9, #C1E1FF);
 }
-
-.welcome-container h1 {
-    font-size: 36px;
-    color: #6A2C91;
-    margin: 20px 0 10px 0;
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    order: 2;
 }
-
-.welcome-container p {
-    font-size: 18px;
-    color: #444;
-}
-
-.welcome-container button {
-    padding: 20px 50px;
-    font-size: 22px;
-    background-color: #8A3ECC;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    margin-top: 30px;
+.profile-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     cursor: pointer;
-    transition: transform 0.2s;
+    background-color: rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 20px;
+    order: 1;
+}
+.avatar {
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+.level-text { font-size: 0.9rem; }
+.gold-text { font-size: 0.9rem; font-weight: bold; }
+
+.xp-bar {
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    height: 20px;
+    width: 90%;
+    order: 3;
+}
+.xp-progress {
+    background: linear-gradient(90deg, var(--accent-color), #f4c430);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 0.8rem;
 }
 
-.welcome-container button:hover {
-    background-color: #6D32A2;
-    transform: scale(1.1);
+.main-content {
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 80px;
 }
 
-.logo {
-    width: 180px;
-    margin-bottom: 20px;
+.section {
+    display: none;
+    animation: fadeIn 0.4s;
+}
+.section.active {
+    display: block;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------------------------- */
-/* تصميم الداشبورد / قائمة الأقسام */
-.dashboard {
+/* --- Dashboard --- */
+.dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    margin-top: 20px;
+}
+.card {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--secondary-color);
+}
+.card-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.card h3 { font-size: 1.2rem; color: var(--primary-color); }
+
+.daily-challenge {
+    margin-top: 30px;
     padding: 20px;
+    background: linear-gradient(45deg, var(--gold-color), var(--accent-color));
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+.daily-challenge h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
 }
 
-.dashboard button {
+/* --- Profile --- */
+.profile-card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    text-align: center;
+    margin-top: 20px;
+}
+.profile-card .avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    font-size: 3rem;
+}
+.profile-card h2 { color: var(--primary-color); }
+.title {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.stats {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+.stat {
+    text-align: center;
+}
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+.stat-label {
+    font-size: 0.9rem;
+    color: #777;
+}
+.donations-made {
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+.donations-made h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.donation-stats {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.donation-stat-item {
+    color: #555;
+}
+.donation-stat-item span:last-child {
+    color: var(--primary-color);
+}
+
+/* --- Game Sections --- */
+.game-section {
+    padding-top: 80px;
+}
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.game-header h2 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+.back-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Tajawal', sans-serif;
+    transition: background-color 0.2s;
+}
+.back-button:hover {
+    background: var(--secondary-color);
+}
+.game-button {
+    display: block;
+    margin: 20px auto;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-family: 'Tajawal', sans-serif;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.game-button:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* --- Memory Game --- */
+.memory-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+.memory-card {
+    aspect-ratio: 1;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    padding: 20px;
-    border-radius: 20px;
-    border: none;
-    background: linear-gradient(to bottom, #F6D6FF, #C1E1FF);
-    cursor: pointer;
-    transition: transform 0.2s;
+    font-size: 2rem;
+    color: white;
+    transition: transform 0.4s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+.memory-card.flipped { transform: rotateY(180deg); }
+.memory-card.matched {
+    background-color: var(--accent-color);
+    cursor: default;
+    animation: match-pulse 0.5s;
+}
+@keyframes match-pulse {
+    0%, 100% { transform: scale(1) rotateY(180deg); }
+    50% { transform: scale(1.1) rotateY(180deg); }
+}
+.memory-card .front, .memory-card .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+.memory-card .front {
+    background: #6a994e;
+    color: white;
+    font-size: 2.5rem;
+}
+.memory-card .back {
+    background: white;
+    color: var(--primary-color);
+    transform: rotateY(180deg);
+    font-size: 2rem;
 }
 
-.dashboard button:hover {
+/* --- Puzzle Game --- */
+.puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    background: #333;
+    padding: 5px;
+    border-radius: var(--radius);
+}
+.puzzle-piece {
+    background-size: 300px 300px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+.puzzle-piece:hover { opacity: 0.8; }
+.puzzle-piece.selected { border: 3px solid var(--accent-color); transform: scale(0.95); }
+
+/* --- Arabic Letters Game --- */
+.letter-display {
+    text-align: center;
+    margin-top: 40px;
+}
+.letter-display .letter {
+    font-size: 8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    line-height: 1;
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+.letter-display .letter-name {
+    font-size: 1.5rem;
+    color: #555;
+}
+
+/* --- Donation Center --- */
+.donation-info {
+    text-align: center;
+    padding: 20px;
+    background: rgba(44, 95, 45, 0.1);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+}
+.gold-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-top: 10px;
+}
+.donation-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.donation-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s;
+}
+.donation-card:hover { transform: translateY(-3px); }
+.donation-icon { font-size: 3rem; }
+.donation-card h3 { color: var(--primary-color); }
+.donation-card p { color: #777; }
+.donation-button {
+    background-color: var(--gold-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.donation-button:hover {
+    background-color: #e6c300;
     transform: scale(1.05);
 }
+.donation-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* --- Notification --- */
+.notification {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    padding: 15px 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    z-index: 1000;
+}
+.notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.notification.success { background-color: #4CAF50; color: white; }
+.notification.error { background-color: #f44336; color: white; }
+
+/* --- Bottom Navigation --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 100;
+}
+.bottom-nav-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+}
+.bottom-nav-item.active, .bottom-nav-item:hover {
+    color: var(--primary-color);
+}
+.bottom-nav-item .icon {
+    font-size: 1.5rem;
+}
+.bottom-nav-item .label {
+    font-size: 0.8rem;
+}
+
+.hidden { display: none !important; }
