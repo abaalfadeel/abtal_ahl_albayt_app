@@ -2,28 +2,200 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أبطال أهل البيت</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="welcome-container">
-    <img src="assets/images/logo.png" class="logo" alt="أبطال أهل البيت">
-    <h1>مرحباً يا بطل!</h1>
-    <p>هيا نبدأ رحلتنا مع أبطال أهل البيت</p>
-    <button onclick="startApp()">ابدأ</button>
-</div>
+    <!-- Start Screen -->
+    <section id="startScreen" class="screen active">
+        <div class="logo-container">
+            <h1>أبطال أهل البيت</h1>
+            <p>رحلة في عالم القيم والبطولات</p>
+        </div>
+        <button class="main-button" onclick="navigateTo('characterSelection')">ابدأ المغامرة</button>
+    </section>
+    
+    <!-- Character Selection Screen -->
+    <section id="characterSelection" class="screen">
+        <h2>اختر بطلك</h2>
+        <div class="characters-grid">
+            <div class="character-card" onclick="selectCharacter('boy')">
+                <div class="character-avatar">👦</div>
+                <h3>بطل شجاع</h3>
+            </div>
+            <div class="character-card" onclick="selectCharacter('girl')">
+                <div class="character-avatar">👧</div>
+                <h3>بطلة مؤمنة</h3>
+            </div>
+        </div>
+    </section>
 
-<audio id="welcome-audio" src="assets/audio/welcome.mp3"></audio>
+    <!-- Main App Container (shown after character is selected) -->
+    <div id="appContainer" class="hidden">
+        <header>
+            <div class="profile-info" onclick="navigateTo('profile')">
+                <span class="avatar" id="headerAvatar">👦</span>
+                <div>
+                    <div class="level-text">المستوى <span id="headerLevel">1</span></div>
+                    <div class="gold-text"><span id="headerGold">0</span> 🏆</div>
+                </div>
+            </div>
+            <h1>أبطال أهل البيت</h1>
+            <div class="xp-bar">
+                <div class="xp-progress" id="xpBar">0 / 100 XP</div>
+            </div>
+        </header>
 
-<script>
-function startApp() {
-    document.getElementById('welcome-audio').play();
-    setTimeout(() => {
-        window.location.href = 'menu.html';
-    }, 1000); // بعد ثانية ينتقل للقائمة الرئيسية
-}
-</script>
+        <div class="notification" id="notification"></div>
 
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <h2 style="text-align: center;">مرحباً أيها البطل!</h2>
+                <div class="dashboard-grid">
+                    <div class="card" onclick="navigateTo('game-memory')">
+                        <div class="card-icon">🧠</div>
+                        <h3>ذاكرة كربلاء</h3>
+                    </div>
+                    <div class="card" onclick="navigateTo('game-puzzle')">
+                        <div class="card-icon">🧩</div>
+                        <h3>صور أهل البيت</h3>
+                    </div>
+                    <div class="card" onclick="navigateTo('game-letters')">
+                        <div class="card-icon">🔤</div>
+                        <h3>نطْق القرآن</h3>
+                    </div>
+                    <div class="card" onclick="navigateTo('donation-center')">
+                        <div class="card-icon">💝</div>
+                        <h3>مركز التبرع</h3>
+                    </div>
+                </div>
+                <div class="daily-challenge" id="dailyChallengeCard">
+                    <h3>✨ مهمتك اليومية ✨</h3>
+                    <p id="dailyChallengeText">لعب "ذاكرة كربلاء" مرة واحدة</p>
+                    <button class="back-button" id="dailyChallengeBtn" onclick="completeDailyChallenge()">أكمل المهمة (+30 XP, +50 🏆)</button>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="section">
+                <div class="profile-card">
+                    <div class="avatar" id="profileAvatar">👦</div>
+                    <h2>البطل الصغير</h2>
+                    <div class="title" id="currentTitle">محب أهل البيت</div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value" id="totalXP">0</div>
+                            <div class="stat-label">إجمالي النقاط</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="totalGold">0</div>
+                            <div class="stat-label">الذهب</div>
+                        </div>
+                    </div>
+                     <div class="donations-made">
+                        <h3>إجمالي التبرعات</h3>
+                        <div class="donation-stats">
+                            <div class="donation-stat-item">
+                                <span>🕌</span><span id="donationMosque">0</span>
+                            </div>
+                            <div class="donation-stat-item">
+                                <span>🤲</span><span id="donationPoor">0</span>
+                            </div>
+                            <div class="donation-stat-item">
+                                <span>📖</span><span id="donationBooks">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Memory Game Section -->
+            <section id="game-memory" class="section game-section">
+                <div class="game-header">
+                    <h2>ذاكرة كربلاء</h2>
+                    <button class="back-button" onclick="navigateTo('dashboard')">العودة</button>
+                </div>
+                <p style="text-align: center; color: #777;">اعثر على الأزواج المتطابقة من شعارات أهل البيت (ع)</p>
+                <div class="memory-board" id="memoryBoard"></div>
+                <button class="game-button" onclick="resetMemoryGame()">لعبة جديدة</button>
+            </section>
+            
+            <!-- Puzzle Game Section -->
+            <section id="game-puzzle" class="section game-section">
+                <div class="game-header">
+                    <h2>صور أهل البيت</h2>
+                    <button class="back-button" onclick="navigateTo('dashboard')">العودة</button>
+                </div>
+                <p style="text-align: center; color: #777;">اضغط على مربعين لتبديل أماكنهما لتكملة الصورة</p>
+                <div class="puzzle-board" id="puzzleBoard"></div>
+                <button class="game-button" onclick="resetPuzzleGame()">إعادة ترتيب</button>
+            </section>
+
+            <!-- Arabic Letters Section -->
+            <section id="game-letters" class="section game-section">
+                <div class="game-header">
+                    <h2>نطْق القرآن</h2>
+                    <button class="back-button" onclick="navigateTo('dashboard')">العودة</button>
+                </div>
+                <div class="letter-display">
+                    <div class="letter" id="arabicLetter">أ</div>
+                    <div class="letter-name">ألف</div>
+                </div>
+                <button class="game-button" onclick="nextLetter()">الحرف التالي (+5 XP)</button>
+            </section>
+
+            <!-- Donation Center -->
+            <section id="donation-center" class="section game-section">
+                <div class="game-header">
+                    <h2>مركز التبرع</h2>
+                    <button class="back-button" onclick="navigateTo('dashboard')">العودة</button>
+                </div>
+                <div class="donation-info">
+                    <p>استخدم ذهبك في الخير واحصل على الأجر والمكافأة من الله</p>
+                    <div class="gold-display">رصيدك: <span id="centerGoldAmount">0</span> 🏆</div>
+                </div>
+                <div class="donation-options">
+                    <div class="donation-card">
+                        <div class="donation-icon">🕌</div>
+                        <h3>بناء مسجد</h3>
+                        <p>التكلفة: 100 🏆</p>
+                        <button class="donation-button" onclick="donate('mosque', 100)">تبرع الآن</button>
+                    </div>
+                    <div class="donation-card">
+                        <div class="donation-icon">🤲</div>
+                        <h3>مساعدة فقير</h3>
+                        <p>التكلفة: 50 🏆</p>
+                        <button class="donation-button" onclick="donate('poor', 50)">تبرع الآن</button>
+                    </div>
+                    <div class="donation-card">
+                        <div class="donation-icon">📖</div>
+                        <h3>طباعة كتب دينية</h3>
+                        <p>التكلفة: 75 🏆</p>
+                        <button class="donation-button" onclick="donate('books', 75)">تبرع الآن</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <nav class="bottom-nav">
+            <div class="bottom-nav-item active" onclick="navigateTo('dashboard')">
+                <div class="icon">🏠</div>
+                <div class="label">الرئيسية</div>
+            </div>
+            <div class="bottom-nav-item" onclick="navigateTo('profile')">
+                <div class="icon">🏆</div>
+                <div class="label">ملفي</div>
+            </div>
+        </nav>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
-</html>
+                                </html>
